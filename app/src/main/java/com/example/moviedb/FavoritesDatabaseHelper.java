@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,9 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_YEAR = "year";
-    private static final String COLUMN_IMDB_ID = "imdb_id";
-    private static final String COLUMN_TYPE = "type";
+    private static final String COLUMN_STUDIO = "studio";
+    private static final String COLUMN_RATING = "rating";
+    private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_POSTER = "poster";
 
     public FavoritesDatabaseHelper(Context context) {
@@ -30,8 +32,9 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_TITLE + " TEXT,"
                 + COLUMN_YEAR + " TEXT,"
-                + COLUMN_IMDB_ID + " TEXT,"
-                + COLUMN_TYPE + " TEXT,"
+                + COLUMN_STUDIO + " TEXT,"
+                + COLUMN_RATING + " TEXT,"
+                + COLUMN_DESCRIPTION + " TEXT,"
                 + COLUMN_POSTER + " TEXT" + ")";
         db.execSQL(CREATE_FAVORITES_TABLE);
     }
@@ -52,14 +55,54 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Movie movie = new Movie();
-                movie.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
-                movie.setYear(cursor.getString(cursor.getColumnIndex(COLUMN_YEAR)));
-                movie.setImdbID(cursor.getString(cursor.getColumnIndex(COLUMN_IMDB_ID)));
-                movie.setType(cursor.getString(cursor.getColumnIndex(COLUMN_TYPE)));
-                movie.setPoster(cursor.getString(cursor.getColumnIndex(COLUMN_POSTER)));
+
+                // Check and set each column value safely
+                int titleIndex = cursor.getColumnIndex(COLUMN_TITLE);
+                if (titleIndex != -1) {
+                    movie.setTitle(cursor.getString(titleIndex));
+                } else {
+                    Log.e("FavoritesDatabaseHelper", "COLUMN_TITLE not found");
+                }
+
+                int yearIndex = cursor.getColumnIndex(COLUMN_YEAR);
+                if (yearIndex != -1) {
+                    movie.setYear(cursor.getString(yearIndex));
+                } else {
+                    Log.e("FavoritesDatabaseHelper", "COLUMN_YEAR not found");
+                }
+
+                int studioIndex = cursor.getColumnIndex(COLUMN_STUDIO);
+                if (studioIndex != -1) {
+                    movie.setStudio(cursor.getString(studioIndex));
+                } else {
+                    Log.e("FavoritesDatabaseHelper", "COLUMN_STUDIO not found");
+                }
+
+                int ratingIndex = cursor.getColumnIndex(COLUMN_RATING);
+                if (ratingIndex != -1) {
+                    movie.setRating(cursor.getString(ratingIndex));
+                } else {
+                    Log.e("FavoritesDatabaseHelper", "COLUMN_RATING not found");
+                }
+
+                int descriptionIndex = cursor.getColumnIndex(COLUMN_DESCRIPTION);
+                if (descriptionIndex != -1) {
+                    movie.setDescription(cursor.getString(descriptionIndex));
+                } else {
+                    Log.e("FavoritesDatabaseHelper", "COLUMN_DESCRIPTION not found");
+                }
+
+                int posterIndex = cursor.getColumnIndex(COLUMN_POSTER);
+                if (posterIndex != -1) {
+                    movie.setPoster(cursor.getString(posterIndex));
+                } else {
+                    Log.e("FavoritesDatabaseHelper", "COLUMN_POSTER not found");
+                }
+
                 favoriteMovies.add(movie);
             } while (cursor.moveToNext());
         }
+
         cursor.close();
         db.close();
 

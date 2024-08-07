@@ -1,24 +1,30 @@
 package com.example.moviedb;
 
-import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-public class Movie {
-    @SerializedName("Title")
+public class Movie implements Serializable {
     private String title;
-
-    @SerializedName("Year")
+    private String studio;
+    private String rating;
+    private String description;
+    private String poster;
     private String year;
 
-    @SerializedName("imdbID")
-    private String imdbID;
+    // Default constructor
+    public Movie() {
+    }
 
-    @SerializedName("Type")
-    private String type;
+    // Constructor with parameters
+    public Movie(String title, String studio, String rating, String description, String poster) {
+        this.title = title;
+        this.studio = studio;
+        this.rating = rating;
+        this.description = description;
+        this.poster = poster;
+        this.year = year;
+    }
 
-    @SerializedName("Poster")
-    private String poster;
-
-    // Getters and setters
+    // Getter and Setter methods
     public String getTitle() {
         return title;
     }
@@ -27,28 +33,28 @@ public class Movie {
         this.title = title;
     }
 
-    public String getYear() {
-        return year;
+    public String getStudio() {
+        return studio;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setStudio(String studio) {
+        this.studio = studio;
     }
 
-    public String getImdbID() {
-        return imdbID;
+    public String getRating() {
+        return rating;
     }
 
-    public void setImdbID(String imdbID) {
-        this.imdbID = imdbID;
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
-    public String getType() {
-        return type;
+    public String getDescription() {
+        return description;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPoster() {
@@ -58,4 +64,13 @@ public class Movie {
     public void setPoster(String poster) {
         this.poster = poster;
     }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
 }
+

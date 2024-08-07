@@ -1,5 +1,6 @@
 package com.example.moviedb;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView moviesRecyclerView;
     private MovieAdapter movieAdapter;
     private OMDBApiClient omdbApiClient;
+    private List<Movie> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +36,16 @@ public class MainActivity extends AppCompatActivity {
         searchButton = findViewById(R.id.searchButton);
         moviesRecyclerView = findViewById(R.id.moviesRecyclerView);
 
+        movieList = new ArrayList<>();
         moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        movieAdapter = new MovieAdapter();
+        movieAdapter = new MovieAdapter(movieList, new MovieAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Movie movie) {
+                Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
+                intent.putExtra("movie", movie);
+                startActivity(intent);
+            }
+        });
         moviesRecyclerView.setAdapter(movieAdapter);
 
         omdbApiClient = OMDBApiClient.getInstance();
