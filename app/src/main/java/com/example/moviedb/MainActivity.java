@@ -11,74 +11,50 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText searchEditText;
     private Button searchButton;
-    private RecyclerView moviesRecyclerView;
-    private MovieAdapter movieAdapter;
-    private OMDBApiClient omdbApiClient;
-    private List<Movie> movieList;
+    private RecyclerView recyclerView;
+    private MovieAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        searchEditText = findViewById(R.id.searchEditText);
-        searchButton = findViewById(R.id.searchButton);
-        moviesRecyclerView = findViewById(R.id.moviesRecyclerView);
-
-        movieList = new ArrayList<>();
-        moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        movieAdapter = new MovieAdapter(movieList, new MovieAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Movie movie) {
-                Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
-                intent.putExtra("movie", movie);
-                startActivity(intent);
-            }
-        });
-        moviesRecyclerView.setAdapter(movieAdapter);
-
-        omdbApiClient = OMDBApiClient.getInstance();
+        searchEditText = findViewById(R.id.search_edit_text);
+        searchButton = findViewById(R.id.search_button);
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String query = searchEditText.getText().toString().trim();
                 if (!query.isEmpty()) {
-                    searchMovies(query);
-                } else {
-                    Toast.makeText(MainActivity.this, "Please enter a movie name", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
+                    OMDBApiClient.fetchMovies(MainActivity.this, query, new OMDBApiClient.MovieFetchListener() {
+                        @Override
+                        public void onMoviesFetched(List<Movie> movies) {
+                            adapter = new MovieAdapter(movies, new MovieAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(Movie movie) {
+                                    Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
+                                    intent.putExtra("movie", movie);
+                                    startActivity(intent);
+                                }
+                            });
+                            recyclerView.setAdapter(adapter);
+                        }
 
-    private void searchMovies(String query) {
-        Call<OMDBResponse> call = omdbApiClient.getOMDBApi().searchMovies(query, "eb46f94");
-        call.enqueue(new Callback<OMDBResponse>() {
-            @Override
-            public void onResponse(Call<OMDBResponse> call, Response<OMDBResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Movie> movies = response.body().getSearch();
-                    movieAdapter.setMovies(movies);
-                } else {
-                    Toast.makeText(MainActivity.this, "No movies found", Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(MainActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-            }
-
-            @Override
-            public void onFailure(Call<OMDBResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

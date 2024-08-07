@@ -45,67 +45,53 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void addFavorite(Movie movie) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String INSERT_FAVORITE = "INSERT INTO " + TABLE_FAVORITES + " ("
+                + COLUMN_TITLE + ", "
+                + COLUMN_YEAR + ", "
+                + COLUMN_STUDIO + ", "
+                + COLUMN_RATING + ", "
+                + COLUMN_DESCRIPTION + ", "
+                + COLUMN_POSTER + ") VALUES ('"
+                + movie.getTitle() + "', '"
+                + movie.getYear() + "', '"
+                + movie.getStudio() + "', '"
+                + movie.getRating() + "', '"
+                + movie.getDescription() + "', '"
+                + movie.getPoster() + "')";
+        db.execSQL(INSERT_FAVORITE);
+        db.close();
+    }
+
     public List<Movie> getAllFavorites() {
         List<Movie> favoriteMovies = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_FAVORITES;
-
+        String SELECT_ALL = "SELECT * FROM " + TABLE_FAVORITES;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
+        Cursor cursor = db.rawQuery(SELECT_ALL, null);
         if (cursor.moveToFirst()) {
             do {
                 Movie movie = new Movie();
-
-                // Check and set each column value safely
-                int titleIndex = cursor.getColumnIndex(COLUMN_TITLE);
-                if (titleIndex != -1) {
-                    movie.setTitle(cursor.getString(titleIndex));
-                } else {
-                    Log.e("FavoritesDatabaseHelper", "COLUMN_TITLE not found");
-                }
-
-                int yearIndex = cursor.getColumnIndex(COLUMN_YEAR);
-                if (yearIndex != -1) {
-                    movie.setYear(cursor.getString(yearIndex));
-                } else {
-                    Log.e("FavoritesDatabaseHelper", "COLUMN_YEAR not found");
-                }
-
-                int studioIndex = cursor.getColumnIndex(COLUMN_STUDIO);
-                if (studioIndex != -1) {
-                    movie.setStudio(cursor.getString(studioIndex));
-                } else {
-                    Log.e("FavoritesDatabaseHelper", "COLUMN_STUDIO not found");
-                }
-
-                int ratingIndex = cursor.getColumnIndex(COLUMN_RATING);
-                if (ratingIndex != -1) {
-                    movie.setRating(cursor.getString(ratingIndex));
-                } else {
-                    Log.e("FavoritesDatabaseHelper", "COLUMN_RATING not found");
-                }
-
-                int descriptionIndex = cursor.getColumnIndex(COLUMN_DESCRIPTION);
-                if (descriptionIndex != -1) {
-                    movie.setDescription(cursor.getString(descriptionIndex));
-                } else {
-                    Log.e("FavoritesDatabaseHelper", "COLUMN_DESCRIPTION not found");
-                }
-
-                int posterIndex = cursor.getColumnIndex(COLUMN_POSTER);
-                if (posterIndex != -1) {
-                    movie.setPoster(cursor.getString(posterIndex));
-                } else {
-                    Log.e("FavoritesDatabaseHelper", "COLUMN_POSTER not found");
-                }
-
+                movie.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
+                movie.setYear(cursor.getString(cursor.getColumnIndex(COLUMN_YEAR)));
+                movie.setStudio(cursor.getString(cursor.getColumnIndex(COLUMN_STUDIO)));
+                movie.setRating(cursor.getString(cursor.getColumnIndex(COLUMN_RATING)));
+                movie.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
+                movie.setPoster(cursor.getString(cursor.getColumnIndex(COLUMN_POSTER)));
                 favoriteMovies.add(movie);
             } while (cursor.moveToNext());
         }
-
         cursor.close();
         db.close();
-
         return favoriteMovies;
+    }
+
+    public void deleteFavorite(Movie movie) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String DELETE_FAVORITE = "DELETE FROM " + TABLE_FAVORITES + " WHERE "
+                + COLUMN_TITLE + " = '" + movie.getTitle() + "' AND "
+                + COLUMN_YEAR + " = '" + movie.getYear() + "'";
+        db.execSQL(DELETE_FAVORITE);
+        db.close();
     }
 }

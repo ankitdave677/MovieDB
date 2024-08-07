@@ -1,65 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp">
 
     <ImageView
-        android:id="@+id/poster_image_view"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="Movie Poster" />
+        android:id="@+id/movie_poster"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/movie_poster" />
 
     <TextView
-        android:id="@+id/title_text_view"
+        android:id="@+id/movie_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/poster_image_view"
         android:layout_marginTop="16dp"
-        android:text="Title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/studio_text_view"
+        android:id="@+id/movie_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_text_view"
         android:layout_marginTop="8dp"
-        android:text="Studio" />
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/rating_text_view"
+        android:id="@+id/movie_studio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/studio_text_view"
         android:layout_marginTop="8dp"
-        android:text="Rating" />
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/year_text_view"
+        android:id="@+id/movie_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rating_text_view"
         android:layout_marginTop="8dp"
-        android:text="Year" />
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/description_text_view"
+        android:id="@+id/movie_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/year_text_view"
         android:layout_marginTop="8dp"
-        android:text="Description"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/add_to_favorites_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/description_text_view"
-        android:layout_marginTop="16dp"
-        android:text="Add to Favorites" />
-
-</RelativeLayout>
+</LinearLayout>

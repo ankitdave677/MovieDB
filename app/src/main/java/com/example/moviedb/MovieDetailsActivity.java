@@ -10,36 +10,33 @@ import com.bumptech.glide.Glide;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
-    private ImageView moviePosterImageView;
     private TextView titleTextView;
+    private TextView yearTextView;
     private TextView studioTextView;
     private TextView ratingTextView;
-    private TextView yearTextView;
     private TextView descriptionTextView;
+    private ImageView posterImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
-        moviePosterImageView = findViewById(R.id.poster_image_view);
-        titleTextView = findViewById(R.id.title_text_view);
-        studioTextView = findViewById(R.id.studio_text_view);
-        ratingTextView = findViewById(R.id.rating_text_view);
-        yearTextView = findViewById(R.id.year_text_view);
-        descriptionTextView = findViewById(R.id.description_text_view);
+        titleTextView = findViewById(R.id.movie_title);
+        yearTextView = findViewById(R.id.movie_year);
+        studioTextView = findViewById(R.id.movie_studio);
+        ratingTextView = findViewById(R.id.movie_rating);
+        descriptionTextView = findViewById(R.id.movie_description);
+        posterImageView = findViewById(R.id.movie_poster);
 
         Movie movie = getIntent().getParcelableExtra("movie");
-
         if (movie != null) {
             titleTextView.setText(movie.getTitle());
+            yearTextView.setText(movie.getYear());
             studioTextView.setText(movie.getStudio());
             ratingTextView.setText(movie.getRating());
-            yearTextView.setText(movie.getYear());
             descriptionTextView.setText(movie.getDescription());
-            Glide.with(this)
-                    .load(movie.getPoster())
-                    .into(moviePosterImageView);
+            Glide.with(this).load(movie.getPoster()).into(posterImageView);
         }
     }
 }
