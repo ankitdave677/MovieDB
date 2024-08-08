@@ -5,9 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
@@ -27,8 +30,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
-        return new MovieViewHolder(itemView);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
+        return new MovieViewHolder(view);
     }
 
     @Override
@@ -36,7 +39,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = movies.get(position);
         holder.titleTextView.setText(movie.getTitle());
         holder.yearTextView.setText(movie.getYear());
-        Glide.with(holder.itemView.getContext()).load(movie.getPoster()).into(holder.posterImageView);
+        holder.studioTextView.setText(movie.getStudio());
+        holder.ratingTextView.setText(movie.getRating());
+        Glide.with(holder.posterImageView.getContext()).load(movie.getPoster()).into(holder.posterImageView);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,12 +59,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView yearTextView;
+        public TextView studioTextView;
+        public TextView ratingTextView;
         public ImageView posterImageView;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.movie_title);
             yearTextView = itemView.findViewById(R.id.movie_year);
+            studioTextView = itemView.findViewById(R.id.movie_studio);
+            ratingTextView = itemView.findViewById(R.id.movie_rating);
             posterImageView = itemView.findViewById(R.id.movie_poster);
         }
     }

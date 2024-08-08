@@ -5,26 +5,28 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public class Movie implements Parcelable {
+public class Movie implements Serializable, Parcelable {
     private String title;
     private String studio;
     private String rating;
     private String description;
     private String poster;
     private String year;
+    private String imdbID;
 
     // Default constructor
     public Movie() {
     }
 
     // Constructor with parameters
-    public Movie(String title, String studio, String rating, String description, String poster, String year) {
+    public Movie(String title, String studio, String rating, String description, String poster, String year, String imdbID) {
         this.title = title;
         this.studio = studio;
         this.rating = rating;
         this.description = description;
         this.poster = poster;
         this.year = year;
+        this.imdbID = imdbID;
     }
 
     // Getter and Setter methods
@@ -76,6 +78,14 @@ public class Movie implements Parcelable {
         this.year = year;
     }
 
+    public String getImdbID() {
+        return imdbID;
+    }
+
+    public void setImdbID(String imdbID) {
+        this.imdbID = imdbID;
+    }
+
     // Parcelable implementation
     protected Movie(Parcel in) {
         title = in.readString();
@@ -84,6 +94,7 @@ public class Movie implements Parcelable {
         description = in.readString();
         poster = in.readString();
         year = in.readString();
+        imdbID = in.readString();
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
@@ -111,5 +122,6 @@ public class Movie implements Parcelable {
         parcel.writeString(description);
         parcel.writeString(poster);
         parcel.writeString(year);
+        parcel.writeString(imdbID);
     }
 }
