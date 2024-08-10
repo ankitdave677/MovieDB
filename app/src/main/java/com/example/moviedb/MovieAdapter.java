@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,14 +18,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     private List<Movie> movies;
     private OnItemClickListener listener;
+    private FavoritesDatabaseHelper dbHelper;
 
     public interface OnItemClickListener {
         void onItemClick(Movie movie);
     }
 
-    public MovieAdapter(List<Movie> movies, OnItemClickListener listener) {
+    public MovieAdapter(List<Movie> movies, OnItemClickListener listener, FavoritesDatabaseHelper dbHelper) {
         this.movies = movies;
         this.listener = listener;
+        this.dbHelper = dbHelper;
     }
 
     @NonNull
@@ -43,10 +46,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         holder.ratingTextView.setText(movie.getRating());
         Glide.with(holder.posterImageView.getContext()).load(movie.getPoster()).into(holder.posterImageView);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClick(movie);
+        boolean isFavorite = dbHelper.isFavorite(movie);
+        holder.wishlistIcon.setImageResource(isFavorite ? R.drawable.ic_wishlist_filled : R.drawable.ic_wishlist_empty);
+
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(movie));
+
+        holder.wishlistIcon.setOnClickListener(v -> {
+            if (isFavorite) {
+                dbHelper.deleteFavorite(movie);
+                holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_empty);
+                Toast.makeText(v.getContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
+            } else {
+                dbHelper.addFavorite(movie);
+                holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_filled);
+                Toast.makeText(v.getContext(), "Added to favorites", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -62,6 +75,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public TextView studioTextView;
         public TextView ratingTextView;
         public ImageView posterImageView;
+        public ImageView wishlistIcon;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,6 +84,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             studioTextView = itemView.findViewById(R.id.movie_studio);
             ratingTextView = itemView.findViewById(R.id.movie_rating);
             posterImageView = itemView.findViewById(R.id.movie_poster);
+            wishlistIcon = itemView.findViewById(R.id.wishlist_icon);
         }
     }
 }

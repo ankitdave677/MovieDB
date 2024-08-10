@@ -1,5 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- colors.xml -->
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="twilight_purple_primary">#4A148C</color>
+    <color name="twilight_purple_primary_variant">#12005E</color>
+    <color name="twilight_purple_secondary">#7B1FA2</color>
+    <color name="twilight_purple_background">#EDE7F6</color>
+    <color name="twilight_purple_surface">#F3E5F5</color>
+    <color name="twilight_purple_error">#B00020</color>
+    <color name="twilight_purple_on_primary">#FFFFFF</color>
+    <color name="twilight_purple_on_secondary">#FFFFFF</color>
+    <color name="twilight_purple_on_background">#000000</color>
+    <color name="twilight_purple_on_surface">#000000</color>
+    <color name="twilight_purple_on_error">#FFFFFF</color>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.moviedb;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
+        // Enable the Up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Initialize views
         titleTextView = findViewById(R.id.movie_title);
         yearTextView = findViewById(R.id.movie_year);
         studioTextView = findViewById(R.id.movie_studio);
@@ -29,6 +34,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         descriptionTextView = findViewById(R.id.movie_description);
         posterImageView = findViewById(R.id.movie_poster);
 
+        // Get the movie from the intent
         Movie movie = getIntent().getParcelableExtra("movie");
         if (movie != null) {
             titleTextView.setText(movie.getTitle());
@@ -38,5 +44,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
             descriptionTextView.setText(movie.getDescription());
             Glide.with(this).load(movie.getPoster()).into(posterImageView);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle the Up button click
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.MovieDB" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary branding color -->
+        <item name="colorPrimary">@color/twilight_purple_primary</item>
+        <item name="colorPrimaryVariant">@color/twilight_purple_primary_variant</item>
+        <item name="colorOnPrimary">@color/twilight_purple_on_primary</item>
+
+        <!-- Secondary branding color -->
+        <item name="colorSecondary">@color/twilight_purple_secondary</item>
+        <item name="colorOnSecondary">@color/twilight_purple_on_secondary</item>
+
+        <!-- Background and surface colors -->
+        <item name="android:colorBackground">@color/twilight_purple_background</item>
+        <item name="colorSurface">@color/twilight_purple_surface</item>
+        <item name="colorOnSurface">@color/twilight_purple_on_surface</item>
+        <item name="colorOnBackground">@color/twilight_purple_on_background</item>
+
+        <!-- Error color -->
+        <item name="colorError">@color/twilight_purple_error</item>
+        <item name="colorOnError">@color/twilight_purple_on_error</item>
+    </style>
+
+</resources>

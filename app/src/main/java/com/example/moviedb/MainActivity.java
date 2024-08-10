@@ -17,16 +17,21 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText searchEditText;
     private Button searchButton;
+    private Button favoritesButton;
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
+    private FavoritesDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dbHelper = new FavoritesDatabaseHelper(this);
+
         searchEditText = findViewById(R.id.search_edit_text);
         searchButton = findViewById(R.id.search_button);
+        favoritesButton = findViewById(R.id.favorites_button);
         recyclerView = findViewById(R.id.recycler_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                                 intent.putExtra("movie", (Parcelable) movie);
                                 startActivity(intent);
                             }
-                        });
+                        }, dbHelper);
                         recyclerView.setAdapter(adapter);
                     }
 
@@ -54,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
                         // Handle error
                     }
                 });
+            }
+        });
+
+        favoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FavoriteMoviesActivity.class);
+                startActivity(intent);
             }
         });
     }

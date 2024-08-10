@@ -72,6 +72,7 @@ public class OMDBApiClient {
                     try {
                         movie.setStudio(response.optString("Production", "N/A"));
                         movie.setRating(response.optString("imdbRating", "N/A"));
+                        movie.setDescription(response.optString("Plot", "Description not available")); // Fetch description here
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -87,4 +88,6 @@ public class OMDBApiClient {
             requestQueue.add(request);
         }
     }
+
 }
+
