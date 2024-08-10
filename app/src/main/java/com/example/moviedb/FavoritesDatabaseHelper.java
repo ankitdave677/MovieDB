@@ -11,6 +11,7 @@ import java.util.List;
 
 public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
 
+    // Variable declaration
     private static final String DATABASE_NAME = "favorites.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_FAVORITES = "favorites";
@@ -22,12 +23,15 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_POSTER = "poster";
 
+    // Constructor to initialize the database helper
     public FavoritesDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Called when the database is created for the first time
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // SQL statement to create the favorites table
         String CREATE_FAVORITES_TABLE = "CREATE TABLE " + TABLE_FAVORITES + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_TITLE + " TEXT,"
@@ -36,15 +40,19 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_RATING + " TEXT,"
                 + COLUMN_DESCRIPTION + " TEXT,"
                 + COLUMN_POSTER + " TEXT" + ")";
+        // Execute the SQL statement
         db.execSQL(CREATE_FAVORITES_TABLE);
     }
 
+    // Called when the database needs to be upgraded
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Drop the old table if it exists and create a new one
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITES);
         onCreate(db);
     }
 
+    // Method to add a movie to the favorites table
     public void addFavorite(Movie movie) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -55,17 +63,21 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DESCRIPTION, movie.getDescription());
         values.put(COLUMN_POSTER, movie.getPoster());
 
+        // Insert the new row into the favorites table
         db.insert(TABLE_FAVORITES, null, values);
-        db.close();
+        db.close(); // Close the database connection
     }
 
+    // Method to remove a movie from the favorites table
     public void deleteFavorite(Movie movie) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase(); // Get writable database instance
+        // Delete the movie based on its title and year
         db.delete(TABLE_FAVORITES, COLUMN_TITLE + "=? AND " + COLUMN_YEAR + "=?",
                 new String[]{movie.getTitle(), movie.getYear()});
         db.close();
     }
 
+    // Method to check if a movie is in the favorites table
     public boolean isFavorite(Movie movie) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_FAVORITES, new String[]{COLUMN_ID},
@@ -77,11 +89,13 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
         return isFavorite;
     }
 
+    // Method to get all favorite movies from the database
     public List<Movie> getAllFavorites() {
-        List<Movie> favoriteMovies = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_FAVORITES, null, null, null, null, null, null);
+        List<Movie> favoriteMovies = new ArrayList<>(); // List to store favorite movies
+        SQLiteDatabase db = this.getReadableDatabase(); // Get readable database instance
+        Cursor cursor = db.query(TABLE_FAVORITES, null, null, null, null, null, null); // Query to get all rows
 
+        // Iterate through the rows and add each movie to the list
         if (cursor.moveToFirst()) {
             do {
                 Movie movie = new Movie();

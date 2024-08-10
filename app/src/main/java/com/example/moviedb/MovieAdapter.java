@@ -24,6 +24,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         void onItemClick(Movie movie);
     }
 
+    // Constructor for the adapter
     public MovieAdapter(List<Movie> movies, OnItemClickListener listener, FavoritesDatabaseHelper dbHelper) {
         this.movies = movies;
         this.listener = listener;
@@ -48,11 +49,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         // Update wishlist icon based on whether the movie is in favorites
         if (dbHelper.isFavorite(movie)) {
-            holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_filled); // filled heart emoji
+            holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_filled);
         } else {
-            holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_empty); // empty heart emoji
+            holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_empty);
         }
 
+        // Handle the click event for the wishlist icon to add/remove favorites
         holder.wishlistIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +70,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             }
         });
 
+        // Handle the click event for the entire item view
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +84,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movies.size();
     }
 
+    // ViewHolder class to hold the views
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView yearTextView;

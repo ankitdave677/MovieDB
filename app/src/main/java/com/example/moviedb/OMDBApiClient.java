@@ -26,6 +26,7 @@ public class OMDBApiClient {
         void onError(String error);
     }
 
+    // Method to fetch movies based on a search query
     public static void fetchMovies(Context context, String query, final MovieFetchListener listener) {
         String url = BASE_URL + "&s=" + query;
 
@@ -59,7 +60,7 @@ public class OMDBApiClient {
 
         requestQueue.add(request);
     }
-
+    // Method to fetch detailed information for each movie
     private static void fetchMovieDetails(Context context, List<Movie> movies, final MovieFetchListener listener) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 

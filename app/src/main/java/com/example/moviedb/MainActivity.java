@@ -15,6 +15,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Variable declaration
     private EditText searchEditText;
     private Button searchButton;
     private Button favoritesButton;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Set up the search button to fetch movies based on the user's query
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Set up the favorites button to open the favorites screen
         favoritesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
