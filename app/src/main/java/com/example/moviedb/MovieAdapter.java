@@ -46,20 +46,32 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         holder.ratingTextView.setText(movie.getRating());
         Glide.with(holder.posterImageView.getContext()).load(movie.getPoster()).into(holder.posterImageView);
 
-        boolean isFavorite = dbHelper.isFavorite(movie);
-        holder.wishlistIcon.setImageResource(isFavorite ? R.drawable.ic_wishlist_filled : R.drawable.ic_wishlist_empty);
+        // Update wishlist icon based on whether the movie is in favorites
+        if (dbHelper.isFavorite(movie)) {
+            holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_filled); // filled heart emoji
+        } else {
+            holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_empty); // empty heart emoji
+        }
 
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(movie));
+        holder.wishlistIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dbHelper.isFavorite(movie)) {
+                    dbHelper.deleteFavorite(movie);
+                    holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_empty);
+                    Toast.makeText(v.getContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
+                } else {
+                    dbHelper.addFavorite(movie);
+                    holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_filled);
+                    Toast.makeText(v.getContext(), "Added to favorites", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-        holder.wishlistIcon.setOnClickListener(v -> {
-            if (isFavorite) {
-                dbHelper.deleteFavorite(movie);
-                holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_empty);
-                Toast.makeText(v.getContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
-            } else {
-                dbHelper.addFavorite(movie);
-                holder.wishlistIcon.setImageResource(R.drawable.ic_wishlist_filled);
-                Toast.makeText(v.getContext(), "Added to favorites", Toast.LENGTH_SHORT).show();
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(movie);
             }
         });
     }

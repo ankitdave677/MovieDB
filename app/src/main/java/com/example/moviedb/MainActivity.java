@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(Movie movie) {
                                 Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
-                                intent.putExtra("movie", (Parcelable) movie);
-                                startActivity(intent);
+                                intent.putExtra("movie", (Parcelable) movie);                                startActivity(intent);
                             }
                         }, dbHelper);
                         recyclerView.setAdapter(adapter);
